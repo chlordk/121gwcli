@@ -1,0 +1,1 @@
+{"mainValueFloat":"1.615","subValueFloat":"58.730","Mode_mainMode":"ACmV","Mode_subMode":"Hz","mainMode":4,"mainRange":0,"mainValue":1615,"subMode":6,"subRange":18,"subValue":5873,"barStatus":1,"barValue":0,"iconStatus":"0x102800"}

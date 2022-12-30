@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head>
+<title>121GW - DMM</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+    .mainValueFloat {
+        font-family: Courier;
+        font-size: 72px;
+		text-align: center;
+		font-weight: bold;
+    }
+    .subValueFloat {
+        font-family: Courier;
+        font-size: 36px;
+		text-align: center;
+    }
+	.barValue {
+    	display: block;
+	    margin-left: auto;
+    	margin-right: auto;
+	}
+	.debug, .mainMode, .mainRange, .mainValue, .subMode, .subRange, .subValue, .barStatus, .iconStatus {
+        font-family: Courier;
+        font-size: 12px;
+		display: none;
+    }
+	.spin {
+		font-size: 8px;
+	}
+</style>
+<script>
+	var HttpClient = function() { // This superb code is a copy/paste from an unknown genious
+	    this.get = function(aUrl, aCallback) {
+	        var anHttpRequest = new XMLHttpRequest();
+	        anHttpRequest.onreadystatechange = function() { 
+	            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+	                aCallback(anHttpRequest.responseText);
+	        }
+	        anHttpRequest.open( "GET", aUrl, true );            
+	        anHttpRequest.send( null );
+	    }
+	}
+</script>
+</head><body onload="load('');">
+<script>
+var timedFunction = 0;
+var spin = 0;
+	function load() {
+		var defval = {};
+		var client = new HttpClient();
+		var datajson = "./data.js";
+		client.get(datajson, function(response) {
+		    try {
+				defval = JSON.parse(response);
+			} catch (e) {
+				document.getElementById("debug").innerHTML="Error downloading '"+datajson+"'";
+		        return false;
+			}
+			document.getElementById("debug").innerHTML=response;
+			for (var index in defval) {
+				switch (index) {
+					case 'barValue':
+						document.getElementById(index).value = defval[index];
+						break;
+					default:
+						document.getElementById(index).innerHTML=defval[index];
+				}
+			}
+			return true;
+		});
+		document.getElementById("spin").style.color=( ++spin % 2 ? '#0F0' : '#080');
+		timedFunction = setTimeout(function(){load()}, 1000);
+	}
+</script>
+
+<!-- The spinner change color with each 'load()' -->
+<p class="spin" id="spin">¤</p>
+
+<p class="mainValueFloat"><span id="mainValueFloat">&lt; waiting for data &gt;</span> <span id="Mode_mainMode">?</span></p>
+<p class="subValueFloat"><span  id="subValueFloat" >?.???</span> <span id="Mode_subMode" >?</span></p>
+
+<div class="barValue"><input type="range" id="barValue" title="Bar graph" min="0" max="27" step="10" value="10"></div>
+
+<p class="debug" id="debug">debug</p>
+
+<p class="mainMode"  >mainMode <span id="mainMode">XXX</span></p>
+<p class="mainRange" >mainRange <span id="mainRange">XXX</span></p>
+<p class="mainValue" >mainValue <span id="mainValue">XXX</span></p>
+<p class="subMode"   >subMode <span id="subMode">XXX</span></p>
+<p class="subRange"  >subRange <span id="subRange">XXX</span></p>
+<p class="subValue"  >subValue <span id="subValue">XXX</span></p>
+<p class="barStatus" >barStatus <span id="barStatus">XXX</span></p>
+<p class="iconStatus">iconStatus <span id="iconStatus">XXX</span></p>
+
+<p title="Hans Schou <hans@schou.dk> © 2022"><a href="https://github.com/chlordk/121gwcli">©</p>
+<!--
+vim: ts=4 :
+-->
+</body></html>
